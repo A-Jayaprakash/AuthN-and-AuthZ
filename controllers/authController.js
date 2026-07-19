@@ -33,13 +33,32 @@ const login = async (req, res) => {
 
     const user = await User.findOne({email});
 
+    const dummyHash = '$2b$10$CwTycUXWue0Thq9StjUM0uJ8Wf6/4uYSuS8oPlAtVs5rZ3pKF9M8y';
+    const match = await bcrypt.compare(password, user? user.password : dummyHash);
+
     if(!user) throw new AppError('Invalid email or password' , 401);
 
     if(!user.isActive) throw new AppError('User account deactivated', 403);
 
-    const match = await bcrypt.compare(password, user.password);
-    
-    if(!match) throw new AppError('Invalid email or password', 401);
+    if(user.lockUntil && user.lockUntil > Date.now()){
+        throw new AppError('Account temporarily locked due to multiple failed login attempts. Try again later.', 403);
+    }
+
+    if(!match) {
+        user.failedLoginAttempts += 1;
+        if(user.failedLoginAttempts >= 5){
+            user.lockUntil = Date.now() + 15*60*1000;
+            user.failedLoginAttempts = 0;
+        }
+        await user.save();
+        throw new AppError('Invalid email or password', 401);
+    }
+
+    if(user.failedLoginAttempts > 0 || user.lockUntil){
+        user.failedLoginAttempts = 0;
+        user.lockUntil = null;
+        await user.save();
+    }
 
     const token = jwt.sign({id: user.id, role: user.role}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE});
 

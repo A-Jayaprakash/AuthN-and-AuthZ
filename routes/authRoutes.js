@@ -5,10 +5,11 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const asyncHandler = require('../utils/asyncHandler');
 const {register, login, profile} = require('../controllers/authController');
+const {registerLimiter, loginLimiter} = require('../middleware/rateLimiter');
 
-router.post('/register', validate(registerSchema), asyncHandler(register));
+router.post('/register', registerLimiter, validate(registerSchema), asyncHandler(register));
 
-router.post('/login', validate(loginSchema), asyncHandler(login));
+router.post('/login', loginLimiter, validate(loginSchema), asyncHandler(login));
 
 router.get('/me', auth, asyncHandler(profile));
 
