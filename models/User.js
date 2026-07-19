@@ -44,6 +44,22 @@ const userSchema = new mongoose.Schema({
     lockUntil: {
         type: Date,
         default: null
+    },
+    refreshTokenHash: {
+        type: String,
+        default: null
+    },
+    emailVerified: {
+        type: Boolean,
+        default: false
+    },
+    emailVerificationTokenHash: {
+        type: String,
+        default: null
+    },
+    emailVerificationExpires: {
+        type: Date,
+        default: null
     }
 });
 

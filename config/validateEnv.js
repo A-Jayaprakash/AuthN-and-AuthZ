@@ -1,4 +1,4 @@
-const requiredEnvs = ['PORT', 'MONGO_URI', 'JWT_SECRET', 'JWT_EXPIRE'];
+const requiredEnvs = ['PORT', 'MONGO_URI', 'JWT_SECRET', 'JWT_EXPIRE', 'JWT_REFRESH_SECRET', 'JWT_REFRESH_EXPIRE', 'EMAIL_HOST', 'EMAIL_PORT', 'EMAIL_USER', 'EMAIL_PASS', 'EMAIL_FROM'];
 
 const validateEnv = () => {
     const missing = requiredEnvs.filter((key) => !process.env[key]);

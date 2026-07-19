@@ -13,6 +13,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const helmet = require('helmet');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const corsOptions = {
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
 app.use(helmet());
+app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
