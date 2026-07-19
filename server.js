@@ -1,4 +1,7 @@
 require('dotenv').config();
+const validateEnv = require('./config/validateEnv');
+validateEnv();
+const morgan = require('morgan');
 const express = require('express');
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
@@ -11,6 +14,7 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 app.use(express.json());
+app.use(morgan('dev'));
 
 
 app.use('/api/auth', authRoutes);

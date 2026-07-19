@@ -4,10 +4,13 @@
     "dotenv": "^17.4.2",
     "export": "^0.1.337",
     "express": "^5.2.1",
+    "jericho": "^1.0.4",
     "joi": "^18.2.3",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.4",
+    "morgan": "^1.11.0",
     "nodemon": "^3.1.14",
-    "openssl": "^2.0.0"
+    "openssl": "^2.0.0",
+    "winston": "^3.19.0"
   }
 }
